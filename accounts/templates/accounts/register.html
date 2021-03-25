@@ -1,0 +1,12 @@
+{% extends 'layout/basic.html' %}
+
+{% block body_content %}
+    <h3>Registration</h3>
+{% endblock %}
+{% block registration_url %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save User</button>
+    </form>
+{% endblock %}

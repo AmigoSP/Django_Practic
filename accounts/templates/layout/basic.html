@@ -5,7 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-    {% block body_content %}Basic template{% endblock %}
+    <h2>Basic template</h2>
+    <a href="{% url 'article_main' %}">Статьи</a>
+    {% block body_content %}
+
+    {% endblock %}
     {% block registration_url %}
         {% if user.is_authenticated %}
             <strong>

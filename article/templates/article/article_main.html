@@ -1,0 +1,23 @@
+{% extends 'layout/basic.html' %}
+
+{% block body_content %}
+    <h3>Статьи</h3>
+    {% if user.is_authenticated %}
+        <a href="{% url 'article_add' %}">Добавить статью</a><br>
+    {% endif %}
+    {% for article in articles %}
+        <h4>{{ article.title }}</h4>
+        <ul>{{ article.body }}</ul>
+        <ul>Автор: {{ article.author }}</ul>
+        <ul>Дата: {{ article.date }}</ul>
+        <h5>Комментарии:</h5>
+        {% for comment in article.comments.all %}
+            <ul>{{ comment.body }}</ul>
+            <ul>Автор: {{ comment.author }} Дата: {{ comment.date }}</ul>
+        {% endfor %}
+        {% if user.is_authenticated %}
+            <a href="{% url 'comment_add' article.id %}">Добавить комментарий</a>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}

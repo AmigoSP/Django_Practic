@@ -1,6 +1,5 @@
 from django import forms
 
-
 from .models import Article, Comment
 from accounts.models import RegisterUser
 
@@ -46,4 +45,16 @@ class CommentAddForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ('body', )
+        fields = ('body',)
+
+
+class CommentChangeForm(forms.ModelForm):
+    def save(self, commit=True):
+        comment_change = super().save(commit=False)
+        comment_change.changed = True
+        comment_change.save()
+        return comment_change
+
+    class Meta:
+        model = Comment
+        fields = ('body',)

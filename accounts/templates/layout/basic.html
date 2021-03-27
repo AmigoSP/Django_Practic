@@ -6,20 +6,20 @@
 </head>
 <body>
     <h2>Basic template</h2>
+    {% block registration_url %}
+        {% if user.is_authenticated %}
+                <p>Hello, <strong>{{ user.username }}</strong> <a href="{% url 'logout' %}">logout</a></p>
+        {% else %}
+            <div>
+                <a href="{% url 'register' %}">Registration</a>
+                <a href="{% url 'login' %}">Login</a><br><br>
+            </div>
+
+        {% endif %}
+    {% endblock %}
     <a href="{% url 'article_main' %}">Статьи</a>
     {% block body_content %}
 
-    {% endblock %}
-    {% block registration_url %}
-        {% if user.is_authenticated %}
-            <strong>
-                <p>Hello, {{ user.username }}</p>
-                <a href="{% url 'logout' %}">logout</a>
-        {% else %}
-                <a href="{% url 'register' %}">Registration</a>
-                <a href="{% url 'login' %}">Login</a>
-            </strong>
-        {% endif %}
     {% endblock %}
 </body>
 </html>

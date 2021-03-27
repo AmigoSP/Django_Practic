@@ -3,10 +3,10 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
 from .models import Article, Comment
-from .forms import ArticleAddForm, CommentAddForm
+from .forms import ArticleAddForm, CommentAddForm, CommentChangeForm
 from accounts.models import RegisterUser
 
 
@@ -44,3 +44,14 @@ class CommentAddView(LoginRequiredMixin, CreateView):
             form.save()
             return HttpResponseRedirect(reverse_lazy('article_main'))
         raise ValidationError('Проверьте введенные данные')
+
+
+class CommentChangeView(LoginRequiredMixin, UpdateView):
+    template_name = 'article/comment_change.html'
+    model = Comment
+    form_class = CommentChangeForm
+    # fields = ('body',)
+    success_url = reverse_lazy('article_main')
+
+    def get_object(self, queryset=None):
+        return Comment.objects.get(pk=self.kwargs['comment_id'])

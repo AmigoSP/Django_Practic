@@ -6,8 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
 from .models import Article, Comment
-from .forms import ArticleAddForm, CommentAddForm, CommentChangeForm
-from accounts.models import RegisterUser
+from .forms import ArticleAddForm, CommentAddForm, CommentChangeForm, ArticleChangeForm
 
 
 def article_main(request):
@@ -30,6 +29,16 @@ class ArticleAddView(LoginRequiredMixin, CreateView):
         raise ValidationError('Проверьте введенные данные')
 
 
+class ArticleChangeView(LoginRequiredMixin, UpdateView):
+    template_name = 'article/article_change.html'
+    model = Article
+    form_class = ArticleChangeForm
+    success_url = reverse_lazy('article_main')
+
+    def get_object(self, queryset=None):
+        return Article.objects.get(pk=self.kwargs['article_id'])
+
+
 class CommentAddView(LoginRequiredMixin, CreateView):
     template_name = 'article/comment_add.html'
     success_url = reverse_lazy('article_main')
@@ -50,7 +59,6 @@ class CommentChangeView(LoginRequiredMixin, UpdateView):
     template_name = 'article/comment_change.html'
     model = Comment
     form_class = CommentChangeForm
-    # fields = ('body',)
     success_url = reverse_lazy('article_main')
 
     def get_object(self, queryset=None):

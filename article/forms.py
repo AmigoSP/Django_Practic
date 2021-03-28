@@ -25,6 +25,18 @@ class ArticleAddForm(forms.ModelForm):
         fields = ('title', 'body',)
 
 
+class ArticleChangeForm(forms.ModelForm):
+    def save(self, commit=True):
+        article_change = super().save(commit=False)
+        article_change.changed = True
+        article_change.save()
+        return article_change
+
+    class Meta:
+        model = Article
+        fields = ('title', 'body',)
+
+
 class CommentAddForm(forms.ModelForm):
     body = forms.CharField(label='Комментарий', widget=forms.Textarea)
 

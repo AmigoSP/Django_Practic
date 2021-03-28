@@ -9,7 +9,14 @@
         <h4>{{ article.title }}</h4>
         <ul>{{ article.body }}</ul>
         <ul>Автор: {{ article.author }}</ul>
-        <ul>Дата: {{ article.date }}</ul>
+        {% if not article.changed %}
+            <ul>Дата: {{ article.date }}</ul>
+        {% else %}
+            <ul>Дата изменения: {{ article.date }}</ul>
+        {% endif %}
+        {% if user.pk is article.author.pk %}
+                <a href="{% url 'article_change' article.id %}">Редактировать статью</a>
+            {% endif %}
         <h5>Комментарии:</h5>
         {% for comment in article.comments.all %}
             <hr>

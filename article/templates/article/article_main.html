@@ -15,9 +15,9 @@
             <ul>Дата изменения: {{ article.date }}</ul>
         {% endif %}
         {% if user.pk is article.author.pk %}
-                <a href="{% url 'article_change' article.id %}">Редактировать статью</a>
-            {% endif %}
-        <h5>Комментарии:</h5>
+            <a href="{% url 'article_change' article.id %}">Редактировать статью</a>
+        {% endif %}
+        <h5>Комментарии: {{ article.comments.count }}</h5>
         {% for comment in article.comments.all %}
             <hr>
             <ul>{{ comment.body }}</ul>

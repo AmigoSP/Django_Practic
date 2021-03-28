@@ -1,9 +1,7 @@
 {% extends 'layout/basic.html' %}
 
-{% block body_content %}
-    <h3>Login</h3>
-{% endblock %}
 {% block registration_url %}
+    <h3>Login</h3>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

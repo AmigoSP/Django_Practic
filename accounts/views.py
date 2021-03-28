@@ -9,7 +9,6 @@ from django.views.generic import CreateView
 
 from .models import RegisterUser
 from .forms import RegisterUserForm
-from learnDGJ_web import settings
 
 
 # Create your views here.
@@ -44,7 +43,5 @@ class RegisterUserView(CreateView):
 
 class LoginUserView(LoginView):
     template_name = 'accounts/login.html'
-    # model = RegisterUser
     redirect_authenticated_user = True
     redirect_field_name = None
-    # success_url = HttpResponseRedirect(reverse_lazy('index'))

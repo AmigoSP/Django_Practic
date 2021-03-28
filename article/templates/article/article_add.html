@@ -13,17 +13,19 @@
   <body>
       <form method="post">
           {% csrf_token %}
-        <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Заголовок статьи</label>
-    {#      <input class="form-control" id="exampleFormControlInput1">#}
+        <div class="container">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Заголовок статьи</label>
             {{ form.title }}
         </div>
         <div class="mb-3">
           <label for="exampleFormControlTextarea1" class="form-label">Текст статьи</label>
-    {#      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>#}
             {{ form.body }}
         </div>
-        <div class="mb-3"><button type="submit" class="btn btn-primary">Добавить</button></div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+        </div>
       </form>
     <!-- Optional JavaScript -->
     <!-- Popper.js first, then Bootstrap JS -->

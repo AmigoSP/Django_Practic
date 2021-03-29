@@ -12,7 +12,7 @@ class RegisterUserForm(forms.ModelForm):
     first_name = forms.CharField(max_length=50, label='First Name')
     last_name = forms.CharField(max_length=50, label='Last Name')
 
-    def clear_username(self):
+    def clean_username(self):
         username = self.cleaned_data['username']
         if username:
             check = RegisterUser.objects.filter(username=username).exists()

@@ -38,7 +38,7 @@ class RegisterUserView(CreateView):
             user = authenticate(username=username, password=password)
             login(request, user)
             return HttpResponseRedirect(self.success_url)
-        return ValidationError('Form not valid')
+        return render(request, self.template_name, {'form': form})
 
 
 class LoginUserView(LoginView):

@@ -14,34 +14,35 @@
 <body>
 {% block navbar %}
 
-        <header class="p-3 bg-dark text-white">
-            <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    </a>
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="/" class="nav-link px-2 fst-italic text-secondary">Django Practice(Articles)</a></li>
-                        <li><a href="{% url 'article_main' %}" class="nav-link px-2 text-white">Статьи</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-                    </ul>
+    <header class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="nav-link px-2 fst-italic fs-5 text-warning">Django Practice(Articles)</a>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{% url 'article_main' %}" class="nav-link px-2 text-white">Статьи</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                </ul>
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control form-control-dark" placeholder="Search Article">
-                    </form>
-                    <div class="nav nav-pills">
-                        {% if user.is_authenticated %}
-                            <li class="nav me-2 fst-italic fw-bold fs-4 text-warning">{{ user.username }}</li>
-                            <a href="{% url 'logout' %}" class="btn btn-outline-light me-2">Logout</a>
-                        {% else %}
-                            <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Login</a>
-                            <a href="{% url 'register' %}" class="btn btn-warning">Registration</a>
-                        {% endif %}
-                    </div>
+                <form action="{% url 'article_search' %}" method="get" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input name="search_form" type="search" class="form-control form-control-dark"
+                           placeholder="Search Article">
+                </form>
+                <div class="nav nav-pills">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'user_profile' %}" class="nav me-2 fst-italic fw-bold fs-4 text-warning">
+                            {{ user.username }}
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-light me-2">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Login</a>
+                        <a href="{% url 'register' %}" class="btn btn-warning">Registration</a>
+                    {% endif %}
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
 
 {% endblock %}
 <br>
@@ -56,9 +57,13 @@
 
 
 <div class="container">
-    {% block body_content %}
+    {% block form_found_message %}
+        <h3>
+            {{ result_found }}
+        </h3>
+    {% endblock form_found_message %}
+    {% block body_content %}{% endblock %}
 
-    {% endblock %}
 </div>
 
 

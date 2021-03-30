@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -7,6 +8,19 @@ from django.views.generic import CreateView, UpdateView
 
 from .models import Article, Comment
 from .forms import ArticleAddForm, CommentAddForm, CommentChangeForm, ArticleChangeForm
+
+
+def article_detail(request, article_id):
+    article = Article.objects.get(pk=article_id)
+    return render(request, 'article/article_detail.html', {'article': article})
+
+
+def article_search(request):
+    input_data = request.GET.get('search_form')
+    articles = Article.objects.filter(Q(title__icontains=input_data)|Q(body__icontains=input_data))
+    if articles:
+        return render(request, 'article/article_main.html', {'articles': articles, 'result_found': 'Результат поиска:'})
+    return render(request, 'article/article_main.html', {'result_found': 'По Вашему запросу ничего не найдено'})
 
 
 def article_main(request):

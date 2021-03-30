@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+from article.models import Article
 from .models import RegisterUser
 from .forms import RegisterUserForm
 
@@ -21,6 +22,12 @@ def index(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse_lazy('index'))
+
+
+@login_required
+def user_profile(request):
+    articles = Article.objects.filter(author=request.user.id)
+    return render(request, 'accounts/profile.html', {'articles': articles})
 
 
 class RegisterUserView(CreateView):

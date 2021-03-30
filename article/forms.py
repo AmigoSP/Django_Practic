@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Article, Comment
 from accounts.models import RegisterUser
@@ -47,10 +49,11 @@ class CommentAddForm(forms.ModelForm):
         if self.article_id:
             self.article = Article.objects.get(pk=self.article_id)
 
+
     def save(self, commit=True):
         comment = super().save(commit=False)
         comment.body = self.cleaned_data['body']
-        comment.author = RegisterUser.objects.get(username=self.user)
+        comment.author = User.objects.get(username=self.user)
         comment.save()
         self.article.comments.add(comment)
         return comment

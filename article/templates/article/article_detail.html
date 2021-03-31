@@ -1,16 +1,22 @@
 {% extends 'layout/basic.html' %}
 
 {% block body_content %}
-    <h3>Статьи</h3>
-    {% if user.is_authenticated %}
-        <a href="{% url 'article_add' %}">Добавить статью</a><br>
+    <div class="row justify-content-start">
+        <div class="col-1">
+            <h3>Статьи</h3>
+        </div>
+        <div class="col">
+            {% if user.is_authenticated %}
+        <a class="btn btn-success" href="{% url 'article_add' %}">Добавить статью</a><br>
     {% endif %}
+        </div>
+    </div>
     <div class="card">
         {#            <img src="..." class="card-img-top" alt="...">#}
         <div class="card-body">
-            <h5 class="card-title">{{ article.title }}</h5>
+            <h5 class="d-inline card-title">{{ article.title }}</h5>
             {% if user.pk is article.author.pk %}
-                <a href="{% url 'article_change' article.id %}">Редактировать статью</a>
+                <a class="d-inline p-2" href="{% url 'article_change' article.id %}">Редактировать статью</a>
             {% endif %}
             <p class="card-text">{{ article.body }}</p>
         </div>
@@ -21,7 +27,12 @@
             {% else %}
                 <li class="list-group-item">Дата изменения: {{ article.date }}</li>
             {% endif %}
-            <li class="list-group-item">Комментарии: {{ article.comments.count }}</li>
+            <li class="list-group-item">Комментарии: {{ article.comments.count }}
+                {% if user.is_authenticated %}
+                    <a class="p-2" href="{% url 'comment_add' article.id %}">Добавить комментарий</a>
+                {% endif %}
+            </li>
+
         </ul>
         {% for comment in article.comments.all %}
             <div class="card-footer text-muted">
@@ -36,8 +47,6 @@
                 {% endif %}
             </div>
         {% endfor %}
-        {% if user.is_authenticated %}
-            <a href="{% url 'comment_add' article.id %}">Добавить комментарий</a>
-        {% endif %}
+
     </div><br>
 {% endblock body_content %}

@@ -1,14 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from article.models import Article
-from .models import RegisterUser
+from .models import RegisterUser, PrivateMessage
 from .forms import RegisterUserForm
 
 
@@ -16,6 +18,18 @@ from .forms import RegisterUserForm
 
 def index(request):
     return render(request, 'accounts/index.html')
+
+
+@login_required
+def messages_main(request):
+    user = request.user
+    messages = PrivateMessage.objects.filter(Q(from_user__id=user.id) | Q(to_user__id=user.id))
+    content = {'messages': messages.order_by('date')}
+    return render(request, 'accounts/private_messages.html', content)
+
+
+def message_add(request):
+    pass
 
 
 @login_required

@@ -1,0 +1,33 @@
+{% extends 'layout/basic.html' %}
+
+
+{% block body_content %}
+    <div class="row justify-content-start">
+        <div class="col">
+            <h3>Переписка с : {{ chats.username }}</h3>
+        </div>
+    </div>
+
+    <div class="col-10">
+
+            <div class="card">
+                <div class="card-body">
+                    {% for user in chats.messages %}
+                        <p class="fw-bold">{{ user.username }} :: {{ user.date }}</p>
+                        <p>{{ user.body }}</p>
+                    {% endfor %}
+                </div>
+            </div><br>
+    </div>
+
+    <div class="col-1 offset-md-12">
+
+        <div class="d-grid gap-2 col mx-auto">
+            <a class="btn btn-success" type="button">Новое сообщение</a>
+            <a class="btn btn-warning" type="button">Непрочитанные: 0</a>
+            <a href="{% url 'messages_main' %}"  class="btn btn-info" type="button">Все сообщения</a>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -23,13 +23,34 @@ def index(request):
 @login_required
 def messages_main(request):
     user = request.user
+    all_chats = set()
     messages = PrivateMessage.objects.filter(Q(from_user__id=user.id) | Q(to_user__id=user.id))
-    content = {'messages': messages.order_by('date')}
-    return render(request, 'accounts/private_messages.html', content)
+    for message in messages:
+        from_user = message.from_user.get()
+        to_user = message.to_user.get()
+        if from_user.id is user.id:
+            all_chats.add(to_user)
+        else:
+            all_chats.add(from_user)
+    return render(request, 'accounts/private_messages.html', {'chats': all_chats})
 
 
-def message_add(request):
-    pass
+@login_required
+def message_detail(request):
+    chat = {}
+    main_user = request.user.id
+    secondary_user = request.GET.get('user_id')
+    secondary_username = request.GET.get('username')
+    chat['username'] = secondary_username
+    chat['messages'] = list()
+    chats = PrivateMessage.objects.filter(
+        (Q(from_user__id=main_user) & Q(to_user__id=secondary_user)) |
+        (Q(from_user__id=secondary_user) & Q(to_user__id=main_user)))
+    for message in chats:
+        value = {'username': message.from_user.get().username, 'body': message.body, 'date': message.date}
+        chat['messages'].append(value)
+    content = {'chats': chat}
+    return render(request, 'accounts/private_message_detail.html', content)
 
 
 @login_required

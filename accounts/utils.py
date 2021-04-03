@@ -22,9 +22,9 @@ class HandlerPrivateMessages:
             if from_user.id is self.main_user_id:
                 all_chats.add(to_user)
             else:
+                if not message.reading:
+                    self.count_unread += 1
                 all_chats.add(from_user)
-            if not message.reading:
-                self.count_unread += 1
         return {'chats': all_chats, 'unread_messages': self.count_unread}
 
     @property
@@ -33,13 +33,16 @@ class HandlerPrivateMessages:
         for message in self.messages:
             value = {'username': message.from_user.get().username, 'body': message.body, 'date': message.date}
             chat['messages'].append(value)
+            if message.from_user.get().id is not self.main_user_id:
+                message.reading = True
+                message.save()
         content = {'chats': chat,
                    'unread_messages': HandlerPrivateMessages.get_unread_messages(self.main_user_id).count_unread}
         return content
 
     @classmethod
     def get_unread_messages(cls, user, only_messages=False):
-        unread_messages = PrivateMessage.objects.filter(Q(from_user__id=user) | Q(to_user__id=user)).filter(
+        unread_messages = PrivateMessage.objects.filter(Q(to_user__id=user)).filter(
             reading=False)
         if only_messages:
             return cls(messages=unread_messages, main_user_id=user)

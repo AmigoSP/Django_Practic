@@ -42,7 +42,7 @@ class RegisterUserForm(forms.ModelForm):
 class PrivateMessageAdd(forms.ModelForm):
     from_user = forms.CharField()
     to_user = forms.CharField()
-    body = forms.CharField(widget=forms.TextInput)
+    body = forms.CharField(widget=forms.Textarea)
 
     def save_chat_user(self):
         try:

@@ -2,10 +2,18 @@
 
 
 {% block body_content %}
-    <div class="row justify-content-start">
-        <div class="col-1">
-            <h3>Messages</h3>
+    <div class="mb-3 row">
+        <div class="col-8">
+            <form action="{% url 'search_user_for_message' %}" method="get">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <span class="input-group-text fs-3" id="basic-addon1">Messages</span>
+                <input type="text" class="form-control" placeholder="Переписка с пользователем..." aria-label="Username"
+                       aria-describedby="basic-addon1" name="username">
+            </div>
+        </form>
         </div>
+
     </div>
 
     <div class="col-10">
@@ -16,7 +24,8 @@
                         {% csrf_token %}
                         <h5 class="d-inline card-title">Переписка с :
                             <input name="user_id" type="hidden" value="{{ user.id }}">
-                            <input class="btn btn-outline-primary btn-sm" name="username" type="submit" value="{{ user.username }}">
+                            <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
+                                   value="{{ user.username }}">
                         </h5>
                     </form>
 
@@ -33,7 +42,7 @@
             <a href="{% url 'messages_unread' %}" class="btn btn-warning" type="button">
                 Непрочитанные: {{ unread_messages }}
             </a>
-            <a href="{% url 'messages_main' %}"  class="btn btn-info" type="button">Все сообщения</a>
+            <a href="{% url 'messages_main' %}" class="btn btn-info" type="button">Все сообщения</a>
         </div>
 
     </div>

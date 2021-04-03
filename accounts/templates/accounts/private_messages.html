@@ -9,9 +9,10 @@
             <div class="input-group mb-3">
                 <span class="input-group-text fs-3" id="basic-addon1">Messages</span>
                 <input type="text" class="form-control" placeholder="Переписка с пользователем..." aria-label="Username"
-                       aria-describedby="basic-addon1" name="username">
+                       aria-describedby="basic-addon1" name="secondary_username">
             </div>
         </form>
+            <h4>{{ not_found }}</h4>
         </div>
 
     </div>
@@ -22,11 +23,19 @@
                 <div class="card-body">
                     <form action="{% url 'message_detail' %}" method="get">
                         {% csrf_token %}
-                        <h5 class="d-inline card-title">Переписка с :
-                            <input name="user_id" type="hidden" value="{{ user.id }}">
-                            <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
-                                   value="{{ user.username }}">
-                        </h5>
+                        {% if user not in new_chats %}
+                            <h5 class="d-inline card-title">Переписка с :
+                                <input name="user_id" type="hidden" value="{{ user.id }}">
+                                <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
+                                       value="{{ user.username }}">
+                            </h5>
+                        {% else %}
+                            <h5 class="d-inline card-title">Начать переписку с :
+                                <input name="user_id" type="hidden" value="{{ user.id }}">
+                                <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
+                                       value="{{ user.username }}">
+                            </h5>
+                        {% endif %}
                     </form>
 
                 </div>
@@ -38,7 +47,7 @@
     <div class="col-1 offset-md-12">
 
         <div class="d-grid gap-2 col mx-auto">
-            <a class="btn btn-success" type="button">Новое сообщение</a>
+            <a href="{% url 'message_add' %}" class="btn btn-success" type="button">Новое сообщение</a>
             <a href="{% url 'messages_unread' %}" class="btn btn-warning" type="button">
                 Непрочитанные: {{ unread_messages }}
             </a>

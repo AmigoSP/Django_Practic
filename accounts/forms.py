@@ -1,7 +1,8 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from .models import RegisterUser
+from .models import RegisterUser, PrivateMessage, ChatsFromUsers
 
 
 class RegisterUserForm(forms.ModelForm):
@@ -36,3 +37,48 @@ class RegisterUserForm(forms.ModelForm):
     class Meta:
         model = RegisterUser
         fields = ('username', 'password', 'password_confirm', 'email', 'first_name', 'last_name')
+
+
+class PrivateMessageAdd(forms.ModelForm):
+    from_user = forms.CharField()
+    to_user = forms.CharField()
+    body = forms.CharField(widget=forms.TextInput)
+
+    def save_chat_user(self):
+        try:
+            check_main_user = ChatsFromUsers.objects.get(main_user=self.from_user)
+        except ChatsFromUsers.DoesNotExist:
+            check_main_user = None
+        try:
+            check_to_user = ChatsFromUsers.objects.get(main_user=self.to_user)
+        except ChatsFromUsers.DoesNotExist:
+            check_to_user = None
+        if not check_main_user:
+            new_chat_main_user = ChatsFromUsers.objects.create(main_user=self.from_user)
+            new_chat_main_user.save()
+            new_chat_main_user.chats_from_users.add(self.to_user)
+        else:
+            if self.to_user not in check_main_user.chats_from_users.all():
+                check_main_user.chats_from_users.add(self.to_user)
+        if not check_to_user:
+            new_chat_to_user = ChatsFromUsers.objects.create(main_user=self.to_user)
+            new_chat_to_user.save()
+            new_chat_to_user.chats_from_users.add(self.from_user)
+        else:
+            if self.from_user not in check_to_user.chats_from_users.all():
+                check_to_user.chats_from_users.add(self.from_user)
+
+    def save(self, commit=True):
+        self.from_user = User.objects.get(username=self.cleaned_data['from_user'])
+        self.to_user = User.objects.get(username=self.cleaned_data['to_user'])
+        new_message = super().save(commit=False)
+        new_message.body = self.cleaned_data['body']
+        new_message.save()
+        new_message.from_user.add(self.from_user)
+        new_message.to_user.add(self.to_user)
+        self.save_chat_user()
+        return new_message
+
+    class Meta:
+        model = PrivateMessage
+        fields = ('body',)

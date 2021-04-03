@@ -20,3 +20,9 @@ class PrivateMessage(models.Model):
     class Meta:
         verbose_name = 'Личное сообщение'
         verbose_name_plural = "Личные сообщения"
+
+
+class ChatsFromUsers(models.Model):
+    main_user = models.ForeignKey(User, on_delete=models.PROTECT)
+    chats_from_users = models.ManyToManyField(User, related_name='chats_from_users')
+

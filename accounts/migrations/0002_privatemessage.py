@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='PrivateMessage',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(auto_created=True, auto_now=True)),
+                ('date', models.DateTimeField(auto_created=True, auto_now_add=True)),
                 ('body', models.TextField(verbose_name='message')),
                 ('reading', models.BooleanField(default=False, verbose_name='it_reading')),
                 ('from_user', models.ManyToManyField(related_name='from_user', to=settings.AUTH_USER_MODEL)),

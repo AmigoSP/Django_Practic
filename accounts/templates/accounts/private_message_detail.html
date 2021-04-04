@@ -1,0 +1,49 @@
+{% extends 'layout/basic.html' %}
+
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-auto">
+            <h3>Переписка с : {{ chats.username }}</h3>
+        </div>
+        <div class="col-2">
+            <form action="{% url 'message_add' %}" method="get">
+                {% csrf_token %}
+                <input name="user_id" type="hidden" value="{{ chats.id }}">
+                <input name="username" type="hidden" value="{{ chats.username }}">
+                <input class="btn btn btn-success btn-sm" type="submit" value="Add message+">
+            </form>
+        </div>
+    </div>
+
+    <div class="col-10">
+        <div class="card">
+            <div class="card-body">
+                {% for user in chats.messages %}
+                    <p class="fw-bold">{{ user.username }} :: {{ user.date }}</p>
+                    <p>{{ user.body }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <form action="{% url 'message_add' %}" method="get">
+            {% csrf_token %}
+            <input name="user_id" type="hidden" value="{{ chats.id }}">
+            <input name="username" type="hidden" value="{{ chats.username }}">
+            <input class="btn btn btn-success btn-sm" type="submit" value="Add message+">
+        </form>
+    </div>
+
+    <div class="col-1 offset-md-12">
+
+        <div class="d-grid gap-2 col mx-auto">
+            <a href="{% url 'messages_main' %}" class="btn btn-info" type="button">Все сообщения</a>
+            <a href="{% url 'messages_unread' %}" class="btn btn-warning" type="button">
+                Непрочитанные: {{ unread_messages }}
+            </a>
+
+        </div>
+
+    </div>
+
+{% endblock %}

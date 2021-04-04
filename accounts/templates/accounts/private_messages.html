@@ -1,0 +1,61 @@
+{% extends 'layout/basic.html' %}
+
+
+{% block body_content %}
+    <div class="mb-3 row">
+        <div class="col-8">
+            <form action="{% url 'search_user_for_message' %}" method="get">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <span class="input-group-text fs-3" id="basic-addon1">Messages</span>
+                <input type="text" class="form-control" placeholder="Переписка с пользователем..." aria-label="Username"
+                       aria-describedby="basic-addon1" name="secondary_username">
+            </div>
+        </form>
+            <h4>{{ not_found }}</h4>
+        </div>
+
+    </div>
+
+    <div class="col-10">
+        {% for user in chats %}
+            <div class="card">
+                <div class="card-body">
+                    {% if not new_chats or user not in new_chats %}
+                        <form action="{% url 'message_detail' %}" method="get">
+                            {% csrf_token %}
+                            <h5 class="d-inline card-title">Переписка с :
+                                <input name="user_id" type="hidden" value="{{ user.id }}">
+                                <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
+                                       value="{{ user.username }}">
+                            </h5>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'message_add' %}" method="get">
+                            {% csrf_token %}
+                            <h5 class="d-inline card-title">Начать переписку с :
+                                <input name="user_id" type="hidden" value="{{ user.id }}">
+                                <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
+                                       value="{{ user.username }}">
+                            </h5>
+                        </form>
+                    {% endif %}
+                </div>
+            </div><br>
+
+        {% endfor %}
+    </div>
+
+    <div class="col-1 offset-md-12">
+
+        <div class="d-grid gap-2 col mx-auto">
+            <a href="{% url 'messages_main' %}" class="btn btn-info" type="button">Все сообщения</a>
+            <a href="{% url 'messages_unread' %}" class="btn btn-warning" type="button">
+                Непрочитанные: {{ unread_messages }}
+            </a>
+
+        </div>
+
+    </div>
+
+{% endblock %}

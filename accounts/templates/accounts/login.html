@@ -1,0 +1,21 @@
+{% extends 'layout/basic.html' %}
+
+
+{% block registration_url %}
+    <h3>Login</h3>
+    <form method="post" class="form-control">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.non_field_errors }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+            <input type="text" class="form-control" id="{{ form.username.id_for_label }}" name="username">
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+            <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+{% endblock %}

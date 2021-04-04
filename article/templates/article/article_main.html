@@ -1,0 +1,40 @@
+{% extends 'layout/basic.html' %}
+
+{% block body_content %}
+    <div class="row justify-content-start">
+        <div class="col-1">
+            <h3>Статьи</h3>
+        </div>
+        <div class="col">
+            {% if user.is_authenticated %}
+        <a class="btn btn-success" href="{% url 'article_add' %}">Добавить статью</a><br>
+    {% endif %}
+        </div>
+    </div>
+    {% for article in articles %}
+        <div class="card">
+{#            <img src="..." class="card-img-top" alt="...">#}
+            <div class="card-body">
+                <h5 class="d-inline card-title">{{ article.title }}</h5>
+                {% if user.pk is article.author.pk %}
+                    <a class="d-inline p-2" href="{% url 'article_change' article.id %}">Редактировать статью</a>
+                {% endif %}
+                <p class="card-text">{{ article.body|truncatewords:25 }}</p>
+                <a href="{% url 'article_detail' article.id %}" class="btn btn-primary">Read...</a>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Автор: {{ article.author }}</li>
+                {% if not article.changed %}
+                    <li class="list-group-item">Дата: {{ article.date }}</li>
+                {% else %}
+                    <li class="list-group-item">Дата изменения: {{ article.date }}</li>
+                {% endif %}
+            </ul>
+            <div class="card-footer text-muted">
+                Комментарии: {{ article.comments.count }}
+            </div>
+        </div><br>
+
+    {% endfor %}
+
+{% endblock %}

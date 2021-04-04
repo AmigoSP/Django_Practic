@@ -1,0 +1,10 @@
+{% extends 'layout/basic.html' %}
+
+{% block body_content %}
+    <h3>Add comment</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Add comment">
+    </form>
+{% endblock %}

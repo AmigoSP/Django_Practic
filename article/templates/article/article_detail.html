@@ -1,0 +1,52 @@
+{% extends 'layout/basic.html' %}
+
+{% block body_content %}
+    <div class="row justify-content-start">
+        <div class="col-1">
+            <h3>Статьи</h3>
+        </div>
+        <div class="col">
+            {% if user.is_authenticated %}
+        <a class="btn btn-success" href="{% url 'article_add' %}">Добавить статью</a><br>
+    {% endif %}
+        </div>
+    </div>
+    <div class="card">
+        {#            <img src="..." class="card-img-top" alt="...">#}
+        <div class="card-body">
+            <h5 class="d-inline card-title">{{ article.title }}</h5>
+            {% if user.pk is article.author.pk %}
+                <a class="d-inline p-2" href="{% url 'article_change' article.id %}">Редактировать статью</a>
+            {% endif %}
+            <p class="card-text">{{ article.body }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Автор: {{ article.author }}</li>
+            {% if not article.changed %}
+                <li class="list-group-item">Дата: {{ article.date }}</li>
+            {% else %}
+                <li class="list-group-item">Дата изменения: {{ article.date }}</li>
+            {% endif %}
+            <li class="list-group-item">Комментарии: {{ article.comments.count }}
+                {% if user.is_authenticated %}
+                    <a class="p-2" href="{% url 'comment_add' article.id %}">Добавить комментарий</a>
+                {% endif %}
+            </li>
+
+        </ul>
+        {% for comment in article.comments.all %}
+            <div class="card-footer text-muted">
+                <ul>{{ comment.body }}</ul>
+                {% if not comment.changed %}
+                    <ul>Автор: {{ comment.author }} Дата: {{ comment.date }}</ul>
+                {% else %}
+                    <ul>Автор: {{ comment.author }} Дата изменения: {{ comment.date }}</ul>
+                {% endif %}
+                {% if user.pk is comment.author.pk %}
+                    <a href="{% url 'comment_change' comment.id %}">Редактировать комментарий</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    </div><br>
+{% endblock body_content %}

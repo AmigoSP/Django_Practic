@@ -21,19 +21,19 @@
         {% for user in chats %}
             <div class="card">
                 <div class="card-body">
-                    {% if not new_chats or user not in new_chats %}
-                        <form action="{% url 'message_detail' %}" method="get">
+                    {% if user in new_chats %}
+                        <form action="{% url 'message_add' %}" method="get">
                             {% csrf_token %}
-                            <h5 class="d-inline card-title">Переписка с :
+                            <h5 class="d-inline card-title">Начать переписку с :
                                 <input name="user_id" type="hidden" value="{{ user.id }}">
                                 <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
                                        value="{{ user.username }}">
                             </h5>
                         </form>
                     {% else %}
-                        <form action="{% url 'message_add' %}" method="get">
+                        <form action="{% url 'message_detail' %}" method="get">
                             {% csrf_token %}
-                            <h5 class="d-inline card-title">Начать переписку с :
+                            <h5 class="d-inline card-title">Переписка с :
                                 <input name="user_id" type="hidden" value="{{ user.id }}">
                                 <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
                                        value="{{ user.username }}">

@@ -34,11 +34,11 @@ def search_user_for_message(request):
             try:
                 main_user_chat = ChatsFromUsers.objects.get(main_user=main_user)
             except ChatsFromUsers.DoesNotExist:
-                all_main_user_chats = None
+                all_main_user_chats = ()
             else:
                 all_main_user_chats = main_user_chat.chats_from_users.all()
             for user in search_users_secondary:
-                if all_main_user_chats and user not in all_main_user_chats:
+                if user not in all_main_user_chats:
                     new_chats.add(user)
                 chats.add(user)
             unread_messages = HandlerPrivateMessages.get_unread_messages(main_user.id).count_unread

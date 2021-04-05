@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -17,7 +18,7 @@ def article_detail(request, article_id):
 
 def article_search(request):
     input_data = request.GET.get('search_form')
-    articles = Article.objects.filter(Q(title__icontains=input_data)|Q(body__icontains=input_data))
+    articles = Article.objects.filter(Q(title__icontains=input_data) | Q(body__icontains=input_data))
     if articles:
         return render(request, 'article/article_main.html', {'articles': articles, 'result_found': 'Результат поиска:'})
     return render(request, 'article/article_main.html', {'result_found': 'По Вашему запросу ничего не найдено'})
@@ -25,7 +26,10 @@ def article_search(request):
 
 def article_main(request):
     articles = Article.objects.all()
-    content = {'articles': articles}
+    pages = Paginator(articles, 2)
+    page_number = request.GET.get('page', 1)
+    page_obj = pages.get_page(page_number)
+    content = {'page_obj': page_obj}
     return render(request, 'article/article_main.html', content)
 
 

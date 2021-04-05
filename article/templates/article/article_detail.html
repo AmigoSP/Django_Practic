@@ -18,7 +18,7 @@
             {% if user.pk is article.author.pk %}
                 <a class="d-inline p-2" href="{% url 'article_change' article.id %}">Редактировать статью</a>
             {% endif %}
-            <p class="card-text">{{ article.body }}</p>
+            <p class="card-text">{{ article.body|linebreaks }}</p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Автор: {{ article.author }}</li>

@@ -25,8 +25,8 @@ def article_search(request):
 
 
 def article_main(request):
-    articles = Article.objects.all()
-    pages = Paginator(articles, 2)
+    articles = Article.objects.all().order_by('-date')
+    pages = Paginator(articles, 15)
     page_number = request.GET.get('page', 1)
     page_obj = pages.get_page(page_number)
     content = {'page_obj': page_obj}

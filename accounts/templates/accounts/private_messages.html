@@ -17,45 +17,44 @@
 
     </div>
 
-    <div class="col-10">
-        {% for user in chats %}
-            <div class="card">
-                <div class="card-body">
-                    {% if user in new_chats %}
-                        <form action="{% url 'message_add' %}" method="get">
-                            {% csrf_token %}
-                            <h5 class="d-inline card-title">Начать переписку с :
-                                <input name="user_id" type="hidden" value="{{ user.id }}">
-                                <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
-                                       value="{{ user.username }}">
-                            </h5>
-                        </form>
-                    {% else %}
-                        <form action="{% url 'message_detail' %}" method="get">
-                            {% csrf_token %}
-                            <h5 class="d-inline card-title">Переписка с :
-                                <input name="user_id" type="hidden" value="{{ user.id }}">
-                                <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
-                                       value="{{ user.username }}">
-                            </h5>
-                        </form>
-                    {% endif %}
-                </div>
-            </div><br>
+    <div class="row">
+        <div class="col-10">
+            {% for user in chats %}
+                <div class="card">
+                    <div class="card-body">
+                        {% if user in new_chats %}
+                            <form action="{% url 'message_add' %}" method="get">
+                                {% csrf_token %}
+                                <h5 class="d-inline card-title">Начать переписку с :
+                                    <input name="user_id" type="hidden" value="{{ user.id }}">
+                                    <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
+                                           value="{{ user.username }}">
+                                </h5>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'message_detail' %}" method="get">
+                                {% csrf_token %}
+                                <h5 class="d-inline card-title">Переписка с :
+                                    <input name="user_id" type="hidden" value="{{ user.id }}">
+                                    <input class="btn btn-outline-primary btn-sm" name="username" type="submit"
+                                           value="{{ user.username }}">
+                                </h5>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div><br>
 
-        {% endfor %}
-    </div>
-
-    <div class="col-1 offset-md-12">
-
-        <div class="d-grid gap-2 col mx-auto">
-            <a href="{% url 'messages_main' %}" class="btn btn-info" type="button">Все сообщения</a>
-            <a href="{% url 'messages_unread' %}" class="btn btn-warning" type="button">
-                Непрочитанные: {{ unread_messages }}
-            </a>
-
+            {% endfor %}
         </div>
 
+        <div class="col-1">
+            <div class="d-grid gap-2 col mx-auto">
+                <a href="{% url 'messages_main' %}" class="btn btn-info" type="button">Все сообщения</a>
+                <a href="{% url 'messages_unread' %}" class="btn btn-warning" type="button">
+                    Непрочитанные: {{ unread_messages }}
+                </a>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

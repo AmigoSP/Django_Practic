@@ -11,7 +11,8 @@
 
     <title>Title</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
+<div class="wrapper flex-grow-1">
 {% block navbar %}
 
     <header class="p-3 bg-dark text-white">
@@ -62,17 +63,28 @@
             {{ result_found }}
         </h3>
     {% endblock form_found_message %}
-    <div class="row">
-        {% block body_content %}{% endblock %}
-    </div>
 
-    <div class="row">
-        {% block paginations %}
+    {% block body_content %}{% endblock %}
 
-        {% endblock %}
-    </div>
+
+    {% block paginations %}
+
+    {% endblock %}
 
 </div>
+</div>
+<footer class="text-center bottom bg-dark">
+  <!-- Grid container -->
+  <div class="container p-4"></div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="p-3 bg-dark text-warning fst-italic fs-5">
+    © 2021
+    <a class="text-center text-warning fst-italic fs-5" href="">Django Practice with Amigos</a>
+  </div>
+  <!-- Copyright -->
+</footer>
 
 
 

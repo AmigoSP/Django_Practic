@@ -3,8 +3,19 @@
 {% block body_content %}
     <h3>Change Article</h3>
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Change article">
-    </form>
+          {% csrf_token %}
+        <div class="container">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Заголовок статьи</label>
+            {{ form.title }}
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Текст статьи</label>
+            {{ form.body }}
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+        </div>
+      </form>
 {% endblock %}

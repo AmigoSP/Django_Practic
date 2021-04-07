@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
+
 
 from .models import Article, Comment
 from accounts.models import RegisterUser
@@ -28,6 +28,9 @@ class ArticleAddForm(forms.ModelForm):
 
 
 class ArticleChangeForm(forms.ModelForm):
+    title = forms.CharField(max_length=255, label='Заголовок', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    body = forms.CharField(label='Статья', widget=forms.Textarea(attrs={'class': 'form-control'}))
+
     def save(self, commit=True):
         article_change = super().save(commit=False)
         article_change.changed = True
@@ -40,7 +43,7 @@ class ArticleChangeForm(forms.ModelForm):
 
 
 class CommentAddForm(forms.ModelForm):
-    body = forms.CharField(label='Комментарий', widget=forms.Textarea)
+    body = forms.CharField(label='Комментарий', widget=forms.Textarea(attrs={'class': 'form-control'}))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args)
@@ -48,7 +51,6 @@ class CommentAddForm(forms.ModelForm):
         self.article_id = kwargs.get('article_id')
         if self.article_id:
             self.article = Article.objects.get(pk=self.article_id)
-
 
     def save(self, commit=True):
         comment = super().save(commit=False)
@@ -64,6 +66,8 @@ class CommentAddForm(forms.ModelForm):
 
 
 class CommentChangeForm(forms.ModelForm):
+    body = forms.CharField(label='Комментарий', widget=forms.Textarea(attrs={'class': 'form-control'}))
+
     def save(self, commit=True):
         comment_change = super().save(commit=False)
         comment_change.changed = True

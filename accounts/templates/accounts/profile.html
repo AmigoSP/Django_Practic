@@ -18,7 +18,7 @@
     <div class="col-10">
         {% for article in articles %}
             <div class="card">
-                {#            <img src="..." class="card-img-top" alt="...">#}
+                <div class="card-header" style="background-color: #37474F"><br></div>
                 <div class="card-body">
                     <h5 class="d-inline card-title">{{ article.title }}</h5>
                     {% if user.pk is article.author.pk %}
